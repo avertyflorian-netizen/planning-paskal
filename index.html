@@ -377,6 +377,96 @@
       flex-wrap: wrap;
     }
 
+    /* Nouveau : compteur & graduation sous la barre synthétique */
+
+    .summary-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-size: 0.8rem;
+    }
+
+    .availability-counter {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 6px;
+      color: var(--text-muted);
+    }
+
+    .availability-label {
+      font-size: 0.78rem;
+      opacity: 0.9;
+    }
+
+    .availability-days-number {
+      font-size: 1.15rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(230, 57, 113, 0.16);
+      border: 1px solid rgba(230, 57, 113, 0.7);
+      color: #fff;
+    }
+
+    .availability-days-unit {
+      font-size: 0.78rem;
+    }
+
+    .availability-text {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .availability-date {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      opacity: 0.9;
+    }
+
+    .summary-scale {
+      margin-top: 6px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .summary-scale-line {
+      position: relative;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0.14),
+        rgba(255,255,255,0.02)
+      );
+      overflow: hidden;
+    }
+
+    .summary-scale-line::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(
+        to right,
+        rgba(255,255,255,0.3) 0,
+        rgba(255,255,255,0.3) 1px,
+        transparent 1px,
+        transparent 12px
+      );
+      background-size: 13px 100%;
+      opacity: 0.5;
+      mix-blend-mode: screen;
+    }
+
+    .summary-scale-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 3px;
+    }
+
     /* Timeline / books */
 
     .timeline-card {
@@ -748,7 +838,30 @@
         <span class="bar"></span>
       </div>
       <div class="summary-card">
+        <!-- Nouveau header avec compteur -->
+        <div class="summary-header">
+          <div class="availability-counter">
+            <span class="availability-label">Charge actuelle :</span>
+            <span id="availability-days-number" class="availability-days-number">0</span>
+            <span class="availability-days-unit">jours d'activité</span>
+            <span id="availability-text" class="availability-text">
+              Disponible dès maintenant pour un nouvel ouvrage
+            </span>
+          </div>
+          <div class="availability-date" id="availability-date"></div>
+        </div>
+
         <div id="summary-bar" class="summary-bar"></div>
+
+        <!-- Graduation dynamique -->
+        <div id="summary-scale" class="summary-scale">
+          <div class="summary-scale-line"></div>
+          <div class="summary-scale-labels">
+            <span id="summary-scale-min">0 j</span>
+            <span id="summary-scale-max">0 j</span>
+          </div>
+        </div>
+
         <div class="summary-caption">
           <span>Chaque segment = 1 livre (lecture + traitement cumulés)</span>
           <span>Clic sur un segment → ouvre le détail plus bas</span>
@@ -834,6 +947,12 @@
     function diffDaysInclusive(start, end) {
       const diff = Math.round((end - start) / ONE_DAY_MS);
       return Math.max(1, diff + 1);
+    }
+
+    // nouveau : "aujourd'hui" normalisé (sans l'heure)
+    function getToday() {
+      const now = new Date();
+      return new Date(now.getFullYear(), now.getMonth(), now.getDate());
     }
 
     function computeDurationsFromPages(pages) {
@@ -922,12 +1041,26 @@
       document.getElementById("count-year").textContent = finishedThisYear;
     }
 
-    // ----- GRAPHIQUE SYNTHETIQUE -----
+    // ----- GRAPHIQUE SYNTHETIQUE + COMPTEUR GLOBAL -----
     function renderSummaryBar() {
       const summaryBar = document.getElementById("summary-bar");
+      const daysNumberEl = document.getElementById("availability-days-number");
+      const availabilityTextEl = document.getElementById("availability-text");
+      const availabilityDateEl = document.getElementById("availability-date");
+      const scaleEl = document.getElementById("summary-scale");
+      const scaleMinEl = document.getElementById("summary-scale-min");
+      const scaleMaxEl = document.getElementById("summary-scale-max");
+
       summaryBar.innerHTML = "";
 
+      const today = getToday();
+
       if (!books.length) {
+        if (daysNumberEl) daysNumberEl.textContent = "0";
+        if (availabilityTextEl)
+          availabilityTextEl.textContent = "Disponible dès maintenant pour un nouvel ouvrage";
+        if (availabilityDateEl) availabilityDateEl.textContent = "";
+        if (scaleEl) scaleEl.style.display = "none";
         return;
       }
 
@@ -960,6 +1093,43 @@
 
         summaryBar.appendChild(seg);
       });
+
+      // calcul de la dernière fin de traitement
+      let maxEndProcessing = sorted[0].endProcessing;
+      sorted.forEach((book) => {
+        if (book.endProcessing > maxEndProcessing) {
+          maxEndProcessing = book.endProcessing;
+        }
+      });
+
+      let remainingDays = Math.round((maxEndProcessing - today) / ONE_DAY_MS);
+      if (remainingDays < 0) remainingDays = 0;
+
+      if (daysNumberEl) {
+        daysNumberEl.textContent = String(remainingDays);
+      }
+
+      if (availabilityTextEl && availabilityDateEl) {
+  if (remainingDays === 0) {
+    availabilityTextEl.textContent = "Disponible dès maintenant pour un nouvel ouvrage";
+    availabilityDateEl.textContent = "";
+  } else {
+    // Le compteur suffit → pas de texte "Encore X jours"
+    availabilityTextEl.textContent = "";
+    availabilityDateEl.textContent =
+      "Disponible pour un nouvel ouvrage le " + formatDate(maxEndProcessing);
+  }
+}
+      // Graduation dynamique 0 → N
+      if (scaleEl && scaleMinEl && scaleMaxEl) {
+        if (remainingDays === 0) {
+          scaleEl.style.display = "none";
+        } else {
+          scaleEl.style.display = "block";
+          scaleMinEl.textContent = "0 j";
+          scaleMaxEl.textContent = remainingDays + " j";
+        }
+      }
     }
 
     // ----- RENDU DETAILLE -----
