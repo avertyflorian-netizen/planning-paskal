@@ -52,7 +52,7 @@
       flex-wrap: wrap;
       gap: 16px;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       margin-bottom: 24px;
     }
 
@@ -77,21 +77,6 @@
     .subtitle {
       font-size: 0.95rem;
       color: var(--text-muted);
-    }
-
-    .profile {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .avatar {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      object-fit: cover;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.7);
     }
 
     .social {
@@ -624,11 +609,10 @@
 
     @media (max-width: 900px) {
       .app { padding: 18px 14px 26px; }
-      header { flex-direction: column; align-items: flex-start; }
+      header { flex-direction: column; }
       form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .counters { grid-template-columns: 1fr; }
       .book-header { grid-template-columns: minmax(0, 1fr); }
-      .profile { align-self: flex-start; }
     }
 
     @media (max-width: 600px) {
@@ -652,17 +636,10 @@
           Charge de lecture actuelle en temps quasi réel
         </div>
       </div>
-      <div class="profile">
-        <img
-          class="avatar"
-          src="https://scontent-mrs2-2.cdninstagram.com/v/t51.2885-19/580981411_17907582135259686_3323642431245047816_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby44NDMuYzIifQ&_nc_ht=scontent-mrs2-2.cdninstagram.com&_nc_cat=106&_nc_oc=Q6cZ2QFX6r0ROuKwc1Kt9KVCCs_M2zfil6tZJMtumFtWMJyUU3uodqVChAlL1LcecyE67rI&_nc_ohc=g-5Nix2j8f8Q7kNvwFyX1OX&_nc_gid=L3clKEgTXdZZ6yrwz8OL5A&edm=AEYEu-QBAAAA&ccb=7-5&oh=00_AfnXr1g_7AmIv59Lno5GVi3bSVzdXtqc27kwDC2atf5tig&oe=69375513&_nc_sid=ead929"
-          alt="Photo de Paskal"
-        />
-        <div class="social">
-          <div><strong>Paskal</strong> – critique littéraire moderne</div>
-          <div>Instagram : <a href="https://instagram.com/paskaldprs2" target="_blank">@paskaldprs2</a></div>
-          <div>TikTok : <a href="https://www.tiktok.com/@paskaldprs2" target="_blank">@paskaldprs2</a></div>
-        </div>
+      <div class="social">
+        <div><strong>Paskal</strong> – critique littéraire moderne</div>
+        <div>Instagram : <a href="https://instagram.com/paskaldprs2" target="_blank">@paskaldprs2</a></div>
+        <div>TikTok : <a href="https://www.tiktok.com/@paskaldprs2" target="_blank">@paskaldprs2</a></div>
       </div>
     </header>
 
@@ -1330,11 +1307,9 @@
     // ----- COPIE URL PUBLIQUE -----
     function computePublicUrl() {
       if (location.protocol === "file:") {
-        // En local : on affiche un message utile
         return "Ajoute ?mode=public à ton URL GitHub Pages, par ex. :\nhttps://avertyflorian-netizen.github.io/planning-paskal/?mode=public";
       }
       let path = window.location.pathname;
-      // on enlève index.html si présent
       path = path.replace(/index\.html?$/i, "");
       if (!path.endsWith("/")) path += "/";
       return window.location.origin + path + "?mode=public";
