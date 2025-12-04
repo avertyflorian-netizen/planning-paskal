@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
+<html lang="fr"><head>
+  <meta charset="UTF-8">
   <title>Planning de lecture – Paskal</title>
   <style>
     :root {
@@ -276,6 +275,12 @@
       box-shadow: none;
       padding-inline: 10px;
       font-size: 0.78rem;
+    }
+
+    .helper-text {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 4px;
     }
 
     .legend {
@@ -608,8 +613,8 @@
           <span class="highlight">Planning de lecture</span> – Paskal
         </h1>
         <p class="subtitle">
-          Visualisation dynamique du temps de lecture & de traitement des services presse
-          (dark romance, romantasy & co).
+          Visualisation dynamique du temps de lecture &amp; de traitement des services presse
+          (dark romance, romantasy &amp; co).
         </p>
         <div class="pill">
           <span class="dot"></span>
@@ -623,23 +628,23 @@
       </div>
     </header>
 
-    <div class="mode-badge" id="mode-badge"></div>
+    <div class="mode-badge" id="mode-badge"><span>Mode admin – interface complète</span></div>
 
     <!-- Compteurs -->
     <section class="counters">
       <div class="card">
         <div class="card-title">Livres en cours de lecture</div>
-        <div class="card-value" id="count-in-progress">0</div>
+        <div class="card-value" id="count-in-progress">2</div>
         <div class="card-detail">Lecture active aujourd'hui</div>
       </div>
       <div class="card">
         <div class="card-title">Livres lus ce mois-ci</div>
-        <div class="card-value" id="count-month">0</div>
+        <div class="card-value" id="count-month">4</div>
         <div class="card-detail">Fin de lecture dans le mois en cours</div>
       </div>
       <div class="card">
         <div class="card-title">Livres lus cette année</div>
-        <div class="card-value" id="count-year">0</div>
+        <div class="card-value" id="count-year">4</div>
         <div class="card-detail">Fin de lecture depuis le 1er janvier</div>
       </div>
     </section>
@@ -654,15 +659,15 @@
         <form id="book-form">
           <div class="field">
             <label for="title">Titre du livre</label>
-            <input id="title" type="text" placeholder="Titre ou code SP" required />
+            <input id="title" type="text" placeholder="Titre ou code SP" required="">
           </div>
           <div class="field">
             <label for="pages">Nombre de pages</label>
-            <input id="pages" type="number" min="1" placeholder="ex : 420" required />
+            <input id="pages" type="number" min="1" placeholder="ex : 420" required="">
           </div>
           <div class="field">
             <label for="genre">Genre / sous-genre</label>
-            <select id="genre" required>
+            <select id="genre" required="">
               <option value="dark_romance">Dark romance</option>
               <option value="mafia_romance">Mafia romance</option>
               <option value="psychological_romance">Romance psychologique / toxique</option>
@@ -678,16 +683,25 @@
           </div>
           <div class="field">
             <label for="receivedDate">Date de réception</label>
-            <input id="receivedDate" type="date" required />
+            <input id="receivedDate" type="date" required="">
           </div>
           <div class="field">
             <label for="startDate">Début de lecture (prévu)</label>
-            <input id="startDate" type="date" required />
+            <input id="startDate" type="date" required="">
           </div>
           <div class="field">
             <button type="submit">Ajouter au planning</button>
           </div>
         </form>
+
+        <div style="margin-top: 10px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <button type="button" id="export-html-btn" class="button-ghost">
+            Exporter la version GitHub (index.html)
+          </button>
+          <div class="helper-text">
+            Télécharge un fichier <strong>index.html</strong> avec l'état actuel du planning, à envoyer ensuite sur GitHub.
+          </div>
+        </div>
 
         <div class="legend">
           <div class="legend-item">
@@ -710,7 +724,7 @@
         <span class="bar"></span>
       </div>
       <div class="summary-card">
-        <div id="summary-bar" class="summary-bar"></div>
+        <div id="summary-bar" class="summary-bar"><div class="summary-segment" title="testexport • 12 j (lecture + traitement)" style="width: 34.285714%; background: linear-gradient(135deg, rgb(91, 209, 255), rgba(91, 209, 255, 0.667));">testexport</div><div class="summary-segment" title="Dark Deal – Tome 1 • 7 j (lecture + traitement)" style="width: 20%; background: linear-gradient(135deg, rgb(230, 57, 113), rgba(230, 57, 113, 0.667));">Dark Deal – To…</div><div class="summary-segment" title="Couronne de Cendres • 9 j (lecture + traitement)" style="width: 25.714286%; background: linear-gradient(135deg, rgb(127, 93, 255), rgba(127, 93, 255, 0.667));">Couronne de Ce…</div><div class="summary-segment" title="La Promesse du Cartel • 7 j (lecture + traitement)" style="width: 20%; background: linear-gradient(135deg, rgb(255, 145, 77), rgba(255, 145, 77, 0.667));">La Promesse du…</div></div>
         <div class="summary-caption">
           <span>Chaque segment = 1 livre (lecture + traitement cumulés)</span>
           <span>Clic sur un segment → ouvre le détail plus bas</span>
@@ -725,18 +739,13 @@
         <span class="bar"></span>
       </div>
       <div class="timeline-card">
-        <div id="books-container" class="books-list">
-          <div class="empty-state">
-            Aucun livre dans le planning pour le moment.
-            Ajoute un ouvrage via le formulaire ci-dessus pour voir la timeline se construire.
-          </div>
-        </div>
+        <div id="books-container" class="books-list"><div class="book-row" data-id="4"><div class="book-header"><div class="book-main-line"><div class="book-title">testexport</div><div class="genre-badge" style="border-color: rgb(91, 209, 255); color: rgb(91, 209, 255);">Romance paranormale</div></div><div class="book-header-right"><div class="short-dates">29/11/2025 → 10/12/2025</div><span class="status-pill status-reading">Lecture en cours</span><span class="toggle-icon">▼</span></div></div><div class="book-body"><div class="book-meta"><div class="book-dates"><span>Réception : <strong>11/11/2025</strong></span><span>Début lecture : <strong>29/11/2025</strong></span><span>Fin lecture : <strong>07/12/2025</strong></span><span>Fin traitement : <strong>10/12/2025</strong></span></div><div class="book-extra"><span>759 pages</span><span>9 j lecture + 3 j traitement</span><span>12 j cumulés</span></div></div><div class="timeline-bar-wrap"><div class="timeline-bar-bg"><div class="segments" style="width: 264px;"><div class="segment-reading" style="width: 198px; background: linear-gradient(135deg, rgb(91, 209, 255), rgba(91, 209, 255, 0.667));"></div><div class="segment-processing" style="width: 66px;"></div></div></div><div class="day-markers"><span>Jour 0</span><span>12 j au total</span></div></div><div class="edit-dates"><div class="edit-dates-group"><label>Début</label><input type="date" data-role="start" value="2025-11-29"></div><div class="edit-dates-group"><label>Fin lecture</label><input type="date" data-role="endReading" value="2025-12-07"></div><div class="edit-dates-group"><label>Fin traitement</label><input type="date" data-role="endProcessing" value="2025-12-10"></div><div class="edit-actions"><button class="button-ghost">Enregistrer</button><button class="button-ghost">Finir aujourd'hui</button><button class="button-danger">Supprimer</button></div></div></div></div><div class="book-row" data-id="1"><div class="book-header"><div class="book-main-line"><div class="book-title">Dark Deal – Tome 1</div><div class="genre-badge" style="border-color: rgb(230, 57, 113); color: rgb(230, 57, 113);">Dark romance</div></div><div class="book-header-right"><div class="short-dates">03/12/2025 → 09/12/2025</div><span class="status-pill status-reading">Lecture en cours</span><span class="toggle-icon">▼</span></div></div><div class="book-body"><div class="book-meta"><div class="book-dates"><span>Réception : <strong>01/12/2025</strong></span><span>Début lecture : <strong>03/12/2025</strong></span><span>Fin lecture : <strong>07/12/2025</strong></span><span>Fin traitement : <strong>09/12/2025</strong></span></div><div class="book-extra"><span>320 pages</span><span>5 j lecture + 2 j traitement</span><span>7 j cumulés</span></div></div><div class="timeline-bar-wrap"><div class="timeline-bar-bg"><div class="segments" style="width: 154px;"><div class="segment-reading" style="width: 110px; background: linear-gradient(135deg, rgb(230, 57, 113), rgba(230, 57, 113, 0.667));"></div><div class="segment-processing" style="width: 44px;"></div></div></div><div class="day-markers"><span>Jour 0</span><span>7 j au total</span></div></div><div class="edit-dates"><div class="edit-dates-group"><label>Début</label><input type="date" data-role="start" value="2025-12-03"></div><div class="edit-dates-group"><label>Fin lecture</label><input type="date" data-role="endReading" value="2025-12-07"></div><div class="edit-dates-group"><label>Fin traitement</label><input type="date" data-role="endProcessing" value="2025-12-09"></div><div class="edit-actions"><button class="button-ghost">Enregistrer</button><button class="button-ghost">Finir aujourd'hui</button><button class="button-danger">Supprimer</button></div></div></div></div><div class="book-row" data-id="2"><div class="book-header"><div class="book-main-line"><div class="book-title">Couronne de Cendres</div><div class="genre-badge" style="border-color: rgb(127, 93, 255); color: rgb(127, 93, 255);">Romantasy</div></div><div class="book-header-right"><div class="short-dates">05/12/2025 → 13/12/2025</div><span class="status-pill status-upcoming">À venir</span><span class="toggle-icon">▼</span></div></div><div class="book-body"><div class="book-meta"><div class="book-dates"><span>Réception : <strong>24/11/2025</strong></span><span>Début lecture : <strong>05/12/2025</strong></span><span>Fin lecture : <strong>11/12/2025</strong></span><span>Fin traitement : <strong>13/12/2025</strong></span></div><div class="book-extra"><span>540 pages</span><span>7 j lecture + 2 j traitement</span><span>9 j cumulés</span></div></div><div class="timeline-bar-wrap"><div class="timeline-bar-bg"><div class="segments" style="width: 198px;"><div class="segment-reading" style="width: 154px; background: linear-gradient(135deg, rgb(127, 93, 255), rgba(127, 93, 255, 0.667));"></div><div class="segment-processing" style="width: 44px;"></div></div></div><div class="day-markers"><span>Jour 0</span><span>9 j au total</span></div></div><div class="edit-dates"><div class="edit-dates-group"><label>Début</label><input type="date" data-role="start" value="2025-12-05"></div><div class="edit-dates-group"><label>Fin lecture</label><input type="date" data-role="endReading" value="2025-12-11"></div><div class="edit-dates-group"><label>Fin traitement</label><input type="date" data-role="endProcessing" value="2025-12-13"></div><div class="edit-actions"><button class="button-ghost">Enregistrer</button><button class="button-ghost">Finir aujourd'hui</button><button class="button-danger">Supprimer</button></div></div></div></div><div class="book-row" data-id="3"><div class="book-header"><div class="book-main-line"><div class="book-title">La Promesse du Cartel</div><div class="genre-badge" style="border-color: rgb(255, 145, 77); color: rgb(255, 145, 77);">Mafia romance</div></div><div class="book-header-right"><div class="short-dates">08/12/2025 → 14/12/2025</div><span class="status-pill status-upcoming">À venir</span><span class="toggle-icon">▼</span></div></div><div class="book-body"><div class="book-meta"><div class="book-dates"><span>Réception : <strong>03/12/2025</strong></span><span>Début lecture : <strong>08/12/2025</strong></span><span>Fin lecture : <strong>12/12/2025</strong></span><span>Fin traitement : <strong>14/12/2025</strong></span></div><div class="book-extra"><span>410 pages</span><span>5 j lecture + 2 j traitement</span><span>7 j cumulés</span></div></div><div class="timeline-bar-wrap"><div class="timeline-bar-bg"><div class="segments" style="width: 154px;"><div class="segment-reading" style="width: 110px; background: linear-gradient(135deg, rgb(255, 145, 77), rgba(255, 145, 77, 0.667));"></div><div class="segment-processing" style="width: 44px;"></div></div></div><div class="day-markers"><span>Jour 0</span><span>7 j au total</span></div></div><div class="edit-dates"><div class="edit-dates-group"><label>Début</label><input type="date" data-role="start" value="2025-12-08"></div><div class="edit-dates-group"><label>Fin lecture</label><input type="date" data-role="endReading" value="2025-12-12"></div><div class="edit-dates-group"><label>Fin traitement</label><input type="date" data-role="endProcessing" value="2025-12-14"></div><div class="edit-actions"><button class="button-ghost">Enregistrer</button><button class="button-ghost">Finir aujourd'hui</button><button class="button-danger">Supprimer</button></div></div></div></div></div>
       </div>
     </section>
   </div>
 
   <script>
-    // ---- CONFIG ----
+    // ----- CONFIG -----
     const GENRE_COLORS = {
       dark_romance: "#e63971",
       mafia_romance: "#ff914d",
@@ -757,10 +766,56 @@
     const urlParams = new URLSearchParams(window.location.search);
     const isPublicMode = urlParams.get("mode") === "public";
 
+    // Ce sera remplacé par les données exportées quand tu cliques sur le bouton
+    const EMBEDDED_DATA = {
+  "books": [
+    {
+      "title": "Dark Deal – Tome 1",
+      "pages": 320,
+      "genre": "dark_romance",
+      "genreLabel": "Dark romance",
+      "receivedDate": "2025-11-30T23:00:00.000Z",
+      "startDate": "2025-12-02T23:00:00.000Z",
+      "endReading": "2025-12-06T23:00:00.000Z",
+      "endProcessing": "2025-12-08T23:00:00.000Z"
+    },
+    {
+      "title": "Couronne de Cendres",
+      "pages": 540,
+      "genre": "romantasy",
+      "genreLabel": "Romantasy",
+      "receivedDate": "2025-11-23T23:00:00.000Z",
+      "startDate": "2025-12-04T23:00:00.000Z",
+      "endReading": "2025-12-10T23:00:00.000Z",
+      "endProcessing": "2025-12-12T23:00:00.000Z"
+    },
+    {
+      "title": "La Promesse du Cartel",
+      "pages": 410,
+      "genre": "mafia_romance",
+      "genreLabel": "Mafia romance",
+      "receivedDate": "2025-12-02T23:00:00.000Z",
+      "startDate": "2025-12-07T23:00:00.000Z",
+      "endReading": "2025-12-11T23:00:00.000Z",
+      "endProcessing": "2025-12-13T23:00:00.000Z"
+    },
+    {
+      "title": "testexport",
+      "pages": 759,
+      "genre": "paranormal_romance",
+      "genreLabel": "Romance paranormale",
+      "receivedDate": "2025-11-10T23:00:00.000Z",
+      "startDate": "2025-11-28T23:00:00.000Z",
+      "endReading": "2025-12-06T23:00:00.000Z",
+      "endProcessing": "2025-12-09T23:00:00.000Z"
+    }
+  ]
+};
+
     let books = [];
     let nextId = 1;
 
-    // ---- UTILS DATES ----
+    // ----- UTILS DATES -----
     function parseDateInput(value) {
       if (!value) return null;
       const parts = value.split("-");
@@ -835,7 +890,24 @@
       return "done";
     }
 
-    // ---- COMPTEURS ----
+    // Hydratation depuis EMBEDDED_DATA (export)
+    function hydrateInitialBooks(rawBooks) {
+      rawBooks.forEach((rb) => {
+        books.push({
+          id: nextId++,
+          title: rb.title,
+          pages: rb.pages,
+          genre: rb.genre,
+          genreLabel: rb.genreLabel,
+          receivedDate: new Date(rb.receivedDate),
+          startDate: new Date(rb.startDate),
+          endReading: new Date(rb.endReading),
+          endProcessing: new Date(rb.endProcessing)
+        });
+      });
+    }
+
+    // ----- COMPTEURS -----
     function updateCounters() {
       const today = new Date();
       const currentMonth = today.getMonth();
@@ -864,7 +936,7 @@
       document.getElementById("count-year").textContent = finishedThisYear;
     }
 
-    // ---- GRAPHIQUE SYNTHETIQUE ----
+    // ----- GRAPHIQUE SYNTHETIQUE -----
     function renderSummaryBar() {
       const summaryBar = document.getElementById("summary-bar");
       summaryBar.innerHTML = "";
@@ -904,7 +976,7 @@
       });
     }
 
-    // ---- RENDU DETAILLE ----
+    // ----- RENDU DETAILLE -----
     function renderBooks() {
       const container = document.getElementById("books-container");
       container.innerHTML = "";
@@ -1161,7 +1233,7 @@
       renderSummaryBar();
     }
 
-    // ---- FORMULAIRE ----
+    // ----- FORMULAIRE -----
     document.getElementById("book-form").addEventListener("submit", function (e) {
       e.preventDefault();
 
@@ -1200,7 +1272,55 @@
       renderBooks();
     });
 
-    // ---- INIT ----
+    // ----- EXPORT HTML -----
+    function buildExportHtml() {
+      const exportedBooks = books.map((b) => ({
+        title: b.title,
+        pages: b.pages,
+        genre: b.genre,
+        genreLabel: b.genreLabel,
+        receivedDate: b.receivedDate.toISOString(),
+        startDate: b.startDate.toISOString(),
+        endReading: b.endReading.toISOString(),
+        endProcessing: b.endProcessing.toISOString()
+      }));
+
+      const embedded = JSON.stringify({ books: exportedBooks }, null, 2);
+      // On récupère le HTML complet de la page actuelle
+      let html = document.documentElement.outerHTML;
+      // On remplace la ligne EMBEDDED_DATA par les données
+      html = html.replace(
+        "const EMBEDDED_DATA = null;",
+        "const EMBEDDED_DATA = " + embedded + ";"
+      );
+
+      return "<!DOCTYPE html>\n" + html;
+    }
+
+    function exportHtmlFile() {
+      if (!books.length) {
+        const go = confirm(
+          "Il n'y a aucun livre dans le planning. Exporter quand même un index.html vide ?"
+        );
+        if (!go) return;
+      }
+      const html = buildExportHtml();
+      const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "index.html";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    document.getElementById("export-html-btn").addEventListener("click", function () {
+      exportHtmlFile();
+    });
+
+    // ----- INIT -----
     function setDefaultDates() {
       const today = new Date();
       const yyyy = today.getFullYear();
@@ -1272,10 +1392,20 @@
       }
     }
 
+    function initData() {
+      if (EMBEDDED_DATA && Array.isArray(EMBEDDED_DATA.books)) {
+        hydrateInitialBooks(EMBEDDED_DATA.books);
+      } else {
+        // Première utilisation en local : on met des exemples, que tu peux supprimer
+        seedExampleBooks();
+      }
+    }
+
     setDefaultDates();
-    seedExampleBooks();
     initModeBadge();
+    initData();
     renderBooks();
   </script>
-</body>
-</html>
+
+
+</body></html>
